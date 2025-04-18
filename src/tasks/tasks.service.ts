@@ -38,4 +38,10 @@ export class TasksService {
       }
     }
   }
+
+  updateStatusTask(taskId: string, status: TaskStatus): Task {
+    const task = this.getTaskById(taskId);
+    task.status = status;
+    return task;
+  }
 }
