@@ -3,6 +3,7 @@ import { TaskEntity } from './tasks.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TasksRepository } from './tasks.repository';
 import { TaskStatus } from './task-status.enum';
+import { filterTaskDto } from './dto/filter-task.dto';
 
 @Injectable()
 export class TasksService {
@@ -11,31 +12,10 @@ export class TasksService {
     private readonly tasksRepository: TasksRepository,
   ) {}
 
-  // getALlTasks(): Task[] {
-  //   return this.tasks;
-  // }
-  //
-  // getFilteredTasks(filter: filterTaskDto): Task[] | null {
-  //   const { status, search } = filter;
-  //   let tasks = this.getALlTasks();
-  //   if (status) {
-  //     tasks = this.tasks.filter((task) => task.status === status);
-  //   }
-  //
-  //   if (search) {
-  //     tasks = this.tasks.filter((task) => {
-  //       if (
-  //         task.title.toLowerCase().includes(search.toLowerCase()) ||
-  //         task.description.toLowerCase().includes(search.toLowerCase())
-  //       ) {
-  //         return true;
-  //       }
-  //       return false;
-  //     });
-  //   }
-  //   return tasks;
-  // }
-  //
+  async getTasks(filter: filterTaskDto): Promise<TaskEntity[]> {
+    return await this.tasksRepository.getTasks(filter);
+  }
+
   async createTask(createtaskDto: CreateTaskDto): Promise<TaskEntity> {
     return this.tasksRepository.createTask(createtaskDto);
   }
