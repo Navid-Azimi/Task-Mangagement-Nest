@@ -2,6 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { TaskEntity } from './tasks.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TasksRepository } from './tasks.repository';
+import { TaskStatus } from './task-status.enum';
 
 @Injectable()
 export class TasksService {
@@ -54,10 +55,12 @@ export class TasksService {
     }
   }
 
-  //
-  // updateStatusTask(taskId: string, status: TaskStatus): Task {
-  //   const task = this.getTaskById(taskId);
-  //   task.status = status;
-  //   return task;
-  // }
+  async updateStatusTask(
+    taskId: string,
+    status: TaskStatus,
+  ): Promise<TaskEntity> {
+    let task = await this.getTaskById(taskId);
+    task.status = status;
+    return this.tasksRepository.save(task);
+  }
 }
