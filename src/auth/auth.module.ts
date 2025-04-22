@@ -7,6 +7,7 @@ import { DataSource } from 'typeorm';
 import { UsersRepository } from './users.repository';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { JwtModule } from '@nestjs/jwt';
   ],
   providers: [
     AuthService,
+    JwtStrategy,
     {
       provide: 'UsersRepository',
       useFactory: (dataSource: DataSource): UsersRepository => {
@@ -30,6 +32,6 @@ import { JwtModule } from '@nestjs/jwt';
     },
   ],
   controllers: [AuthController],
-  exports: ['UsersRepository'],
+  exports: ['UsersRepository', JwtStrategy, PassportModule],
 })
 export class AuthModule {}
