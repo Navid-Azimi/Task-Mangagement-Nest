@@ -8,7 +8,7 @@ import { JwtPayload } from './jwt-payload.interface';
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject() private usersRepo: UsersRepository,
+    @Inject(UsersRepository) private usersRepo: UsersRepository,
     private jwtService: JwtService,
   ) {}
 

@@ -15,6 +15,7 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { filterTaskDto } from './dto/filter-task.dto';
 
 @Controller('tasks')
+// @UseGuards(AuthGuard('jwt'))
 export class TasksController {
   constructor(private readonly taskService: TasksService) {}
 

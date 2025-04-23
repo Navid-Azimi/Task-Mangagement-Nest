@@ -8,7 +8,7 @@ import { filterTaskDto } from './dto/filter-task.dto';
 @Injectable()
 export class TasksService {
   constructor(
-    @Inject()
+    @Inject(TasksRepository)
     private readonly tasksRepository: TasksRepository,
   ) {}
 
