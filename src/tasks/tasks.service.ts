@@ -8,7 +8,7 @@ import { filterTaskDto } from './dto/filter-task.dto';
 @Injectable()
 export class TasksService {
   constructor(
-    @Inject('TasksRepository')
+    @Inject()
     private readonly tasksRepository: TasksRepository,
   ) {}
 
@@ -29,7 +29,7 @@ export class TasksService {
   }
 
   async deleteTask(id: string): Promise<void> {
-    const result = await this.tasksRepository.delete(id);
+    const result = await this.tasksRepository.repo.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException('Task not found');
     }
@@ -41,6 +41,6 @@ export class TasksService {
   ): Promise<TaskEntity> {
     let task = await this.getTaskById(taskId);
     task.status = status;
-    return this.tasksRepository.save(task);
+    return this.tasksRepository.repo.save(task);
   }
 }
