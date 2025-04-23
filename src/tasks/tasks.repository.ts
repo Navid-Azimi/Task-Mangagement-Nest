@@ -5,7 +5,9 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskStatus } from './task-status.enum';
 import { filterTaskDto } from './dto/filter-task.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class TasksRepository {
   constructor(
     @InjectRepository(TaskEntity) readonly repo: Repository<TaskEntity>,

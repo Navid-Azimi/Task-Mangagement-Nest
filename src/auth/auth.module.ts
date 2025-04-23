@@ -3,11 +3,10 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { DataSource } from 'typeorm';
-import { UsersRepository } from './users.repository';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
+import { UsersRepository } from './users.repository';
 
 @Module({
   imports: [
@@ -20,18 +19,8 @@ import { JwtStrategy } from './jwt.strategy';
     }),
     TypeOrmModule.forFeature([User]),
   ],
-  providers: [
-    AuthService,
-    JwtStrategy,
-    {
-      provide: 'UsersRepository',
-      useFactory: (dataSource: DataSource): UsersRepository => {
-        return new UsersRepository(dataSource);
-      },
-      inject: [DataSource],
-    },
-  ],
+  providers: [AuthService, JwtStrategy, UsersRepository],
   controllers: [AuthController],
-  exports: ['UsersRepository', JwtStrategy, PassportModule],
+  exports: [JwtStrategy, PassportModule, UsersRepository],
 })
 export class AuthModule {}

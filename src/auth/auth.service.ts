@@ -8,7 +8,7 @@ import { JwtPayload } from './jwt-payload.interface';
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject('UsersRepository') private usersRepo: UsersRepository,
+    @Inject() private usersRepo: UsersRepository,
     private jwtService: JwtService,
   ) {}
 
@@ -20,7 +20,7 @@ export class AuthService {
     authCredentialsDto: AuthCredentialsDto,
   ): Promise<{ accessToken: string }> {
     const { username, password } = authCredentialsDto;
-    const user = await this.usersRepo.findOne({ where: { username } });
+    const user = await this.usersRepo.repo.findOne({ where: { username } });
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload: JwtPayload = { username };
