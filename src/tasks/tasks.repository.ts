@@ -1,17 +1,20 @@
-// movie.repository.ts
-import { DataSource, Repository } from 'typeorm';
+// tasks.repository.ts
+import { Repository } from 'typeorm';
 import { TaskEntity } from './tasks.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskStatus } from './task-status.enum';
 import { filterTaskDto } from './dto/filter-task.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
 
-export class TasksRepository extends Repository<TaskEntity> {
-  constructor(private dataSource: DataSource) {
-    super(TaskEntity, dataSource.createEntityManager());
-  }
+@Injectable()
+export class TasksRepository {
+  constructor(
+    @InjectRepository(TaskEntity) readonly repo: Repository<TaskEntity>,
+  ) {}
 
   async getTasks(filter: filterTaskDto): Promise<TaskEntity[]> {
-    const query = this.createQueryBuilder('tasks');
+    const query = this.repo.createQueryBuilder('tasks');
     const { search, status } = filter;
 
     if (search) {
@@ -27,17 +30,17 @@ export class TasksRepository extends Repository<TaskEntity> {
   }
 
   async taskById(id: string): Promise<TaskEntity | null> {
-    return this.findOne({ where: { id } });
+    return this.repo.findOne({ where: { id } });
   }
 
   async createTask(createTaskDto: CreateTaskDto): Promise<TaskEntity> {
     const { title, description } = createTaskDto;
-    let task = this.create({
+    let task = this.repo.create({
       title,
       description,
       status: TaskStatus.OPEN,
     });
-    await this.save(task);
+    await this.repo.save(task);
     return task;
   }
 }
