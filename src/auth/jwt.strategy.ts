@@ -14,10 +14,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(Payload: JwtPayload): Promise<User> {
+  async validate(Payload: JwtPayload): Promise<User | undefined> {
+    console.log('JWT Payload:', Payload); // ✅ Log the JWT payload
     const { username } = Payload;
+    console.log(username);
     const user = await this.usersRepo.repo.findOne({ where: { username } });
-
+    console.log(user);
     if (!user) {
       throw new UnauthorizedException();
     }

@@ -10,6 +10,7 @@ import { UsersRepository } from './users.repository';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([User]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: 'secret51',
@@ -17,7 +18,6 @@ import { UsersRepository } from './users.repository';
         expiresIn: '3600',
       },
     }),
-    TypeOrmModule.forFeature([User]),
   ],
   providers: [UsersRepository, AuthService, JwtStrategy],
   controllers: [AuthController],
